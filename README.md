@@ -47,7 +47,14 @@ The platform utilizes a **Signature Gradient** aesthetic—a vibrant blend of in
    npm install
    ```
 
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+2. Create a `.env.local` file in the root directory and set your Gemini API key:
+   ```bash
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+   
+   **Important:** The `VITE_` prefix is required for Vite to expose the variable to the browser.
+   
+   For production deployments (e.g., Vercel), add `VITE_GEMINI_API_KEY` to your environment variables in the project settings.
 
 3. Run the app:
    ```bash

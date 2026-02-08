@@ -2,7 +2,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Insight, AIAnalysis, Feature, FeaturePRD, Organisation, VibePromptSet, TechStackComponent, CustomerSegment, UserIdea, PredictedImpact } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+if (!apiKey) {
+  throw new Error('VITE_GEMINI_API_KEY must be set when running in a browser');
+}
+
+const ai = new GoogleGenAI({ apiKey });
 
 export const analyzeInsights = async (insights: Insight[]): Promise<AIAnalysis> => {
   const prompt = `Analyze the following customer feedback and generate a structured summary, identifying key themes and suggesting potential new product features based on the feedback.
