@@ -94,7 +94,7 @@ const RevenueIntelligence: React.FC<RevenueIntelligenceProps> = ({ features, onS
             onClick={handleSimulate}
             disabled={isSimulating || !AI_ENABLED}
             className="px-6 py-2.5 bg-gray-900 text-white rounded-full text-sm font-bold hover:bg-black transition-all shadow-lg shadow-gray-200 flex items-center space-x-2 disabled:opacity-50"
-            title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY" : undefined}
+            title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY or VITE_OPENAI_API_KEY" : undefined}
           >
             {isSimulating && <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />}
             <span>{isSimulating ? 'Simulating...' : 'Simulate Roadmap'}</span>
@@ -221,7 +221,7 @@ const RevenueIntelligence: React.FC<RevenueIntelligenceProps> = ({ features, onS
              onClick={simulatedImpacts ? handleApplyOptimization : handleSimulate}
              disabled={isSimulating || !AI_ENABLED}
              className="px-8 py-3 bg-white text-indigo-600 rounded-full font-bold hover:bg-gray-50 transition-all shadow-xl disabled:opacity-50"
-             title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY" : undefined}
+             title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY or VITE_OPENAI_API_KEY" : undefined}
            >
              {simulatedImpacts ? 'Apply Optimization' : 'Run Predictive Model'}
            </button>

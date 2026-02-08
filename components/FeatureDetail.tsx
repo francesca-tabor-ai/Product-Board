@@ -80,7 +80,7 @@ const FeatureDetail: React.FC<FeatureDetailProps> = ({ feature, insights, weight
               onClick={handleAIEnrich}
               disabled={isEnriching || !AI_ENABLED}
               className="px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-xs font-bold hover:bg-indigo-100 transition-all flex items-center space-x-2 disabled:opacity-50"
-              title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY" : undefined}
+              title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY or VITE_OPENAI_API_KEY" : undefined}
             >
               {isEnriching ? (
                 <div className="animate-spin h-3 w-3 border-2 border-indigo-600 border-t-transparent rounded-full"></div>

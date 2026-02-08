@@ -47,14 +47,18 @@ The platform utilizes a **Signature Gradient** aesthetic—a vibrant blend of in
    npm install
    ```
 
-2. **(Optional)** Create a `.env.local` file in the root directory and set your Gemini API key to enable AI features:
+2. **(Optional)** Create a `.env.local` file in the root directory and set your AI API key(s) to enable AI features:
    ```bash
    VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   VITE_OPENAI_API_KEY=your_openai_api_key_here
    ```
    
-   **Note:** The app works without the API key, but AI-powered features will be disabled. The `VITE_` prefix is required for Vite to expose the variable to the browser.
-   
-   For production deployments (e.g., Vercel), add `VITE_GEMINI_API_KEY` to your environment variables in the project settings. If not set, the app will run in "mock mode" with AI features disabled.
+   **Note:** 
+   - The app works without API keys, but AI-powered features will be disabled
+   - You can use either Gemini or OpenAI (or both - Gemini is tried first, then falls back to OpenAI)
+   - The `VITE_` prefix is required for Vite to expose the variable to the browser
+   - For production deployments (e.g., Vercel), add both keys to your environment variables in the project settings
+   - If neither key is set, the app will run in "mock mode" with AI features disabled
 
 3. Run the app:
    ```bash

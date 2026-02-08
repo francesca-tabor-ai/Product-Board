@@ -133,7 +133,7 @@ const VibeCodeView: React.FC<VibeCodeViewProps> = ({ stack, features }) => {
                  onClick={handleOrchestrate}
                  disabled={isGenerating || selectedFeatureIds.length === 0 || !AI_ENABLED}
                  className="w-full py-5 bg-gray-900 text-white rounded-3xl font-black text-sm hover:bg-black transition-all flex items-center justify-center space-x-3 shadow-xl shadow-gray-200 disabled:opacity-50 disabled:shadow-none"
-                 title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY" : undefined}
+                 title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY or VITE_OPENAI_API_KEY" : undefined}
               >
                  {isGenerating ? <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" /> : <ICONS.Gemini className="w-5 h-5" />}
                  <span>{isGenerating ? 'Synthesizing Build Vibe...' : 'Orchestrate Build Manifest'}</span>

@@ -44,7 +44,7 @@ const InsightsBoard: React.FC<InsightsBoardProps> = ({ insights }) => {
             onClick={handleAIAnalyze}
             disabled={loading || !AI_ENABLED}
             className="group relative inline-flex items-center px-6 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-full hover:bg-black transition-all disabled:opacity-50 overflow-hidden shadow-lg shadow-gray-200"
-            title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY" : undefined}
+            title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY or VITE_OPENAI_API_KEY" : undefined}
           >
             <div className="absolute inset-0 bg-signature-gradient opacity-0 group-hover:opacity-10 transition-opacity"></div>
             {loading ? (
@@ -69,7 +69,7 @@ const InsightsBoard: React.FC<InsightsBoardProps> = ({ insights }) => {
             </svg>
             <div className="flex-1">
               <p className="text-sm font-semibold text-amber-900">AI features disabled</p>
-              <p className="text-xs text-amber-700 mt-1">Add <code className="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">VITE_GEMINI_API_KEY</code> to your environment variables to enable AI-powered insights.</p>
+              <p className="text-xs text-amber-700 mt-1">Add <code className="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">VITE_GEMINI_API_KEY</code> or <code className="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">VITE_OPENAI_API_KEY</code> to your environment variables to enable AI-powered insights.</p>
             </div>
           </div>
         )}
