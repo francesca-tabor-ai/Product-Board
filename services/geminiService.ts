@@ -2,14 +2,56 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Insight, AIAnalysis, Feature, FeaturePRD, Organisation, VibePromptSet, TechStackComponent, CustomerSegment, UserIdea, PredictedImpact } from "../types";
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-if (!apiKey) {
-  throw new Error('VITE_GEMINI_API_KEY must be set when running in a browser');
-}
+// Feature flag: check if AI is enabled
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
+export const AI_ENABLED = Boolean(GEMINI_API_KEY);
 
-const ai = new GoogleGenAI({ apiKey });
+// Lazy initialization: only create client when API key exists
+let aiClient: GoogleGenAI | null = null;
+
+const getAIClient = (): GoogleGenAI | null => {
+  if (!AI_ENABLED) {
+    return null;
+  }
+  if (!aiClient) {
+    aiClient = new GoogleGenAI({ apiKey: GEMINI_API_KEY! });
+  }
+  return aiClient;
+};
+
+// Mock implementations for when AI is disabled
+const mockAIAnalysis: AIAnalysis = {
+  summary: "AI features are disabled. Add VITE_GEMINI_API_KEY to your environment variables to enable AI-powered insights.",
+  keyThemes: ["AI disabled", "Manual analysis required"],
+  suggestedFeatures: []
+};
+
+const mockFeaturePRD: FeaturePRD = {
+  problemStatement: "AI features are disabled. Add VITE_GEMINI_API_KEY to enable AI-powered PRD generation.",
+  vision: "Enable AI to get detailed product requirements.",
+  targetUsers: ["Add API key to enable"],
+  successMetrics: ["Add API key to enable"],
+  requirements: ["Add VITE_GEMINI_API_KEY to environment variables"]
+};
+
+const mockVibePrompts: VibePromptSet = {
+  productSummary: "AI features are disabled. Add VITE_GEMINI_API_KEY to enable Vibe Code generation.",
+  architecture: "Enable AI to get architecture prompts.",
+  frontend: "Enable AI to get frontend implementation prompts.",
+  backend: "Enable AI to get backend implementation prompts.",
+  dataModel: "Enable AI to get data model prompts.",
+  infra: "Enable AI to get infrastructure prompts.",
+  ai: "Enable AI to get AI integration prompts."
+};
 
 export const analyzeInsights = async (insights: Insight[]): Promise<AIAnalysis> => {
+  const ai = getAIClient();
+  
+  if (!ai) {
+    console.warn("AI disabled: returning mock analysis. Add VITE_GEMINI_API_KEY to enable.");
+    return mockAIAnalysis;
+  }
+
   const prompt = `Analyze the following customer feedback and generate a structured summary, identifying key themes and suggesting potential new product features based on the feedback.
   
   Feedback:
@@ -61,6 +103,13 @@ export const analyzeInsights = async (insights: Insight[]): Promise<AIAnalysis> 
 };
 
 export const enrichFeaturePRD = async (feature: Feature): Promise<FeaturePRD> => {
+  const ai = getAIClient();
+  
+  if (!ai) {
+    console.warn("AI disabled: returning mock PRD. Add VITE_GEMINI_API_KEY to enable.");
+    return mockFeaturePRD;
+  }
+
   const prompt = `You are a world-class Product Owner. Based on the feature title and brief description, generate a detailed Product Requirements Document (PRD) segment.
   
   Feature Title: ${feature.title}
@@ -97,11 +146,26 @@ export const enrichFeaturePRD = async (feature: Feature): Promise<FeaturePRD> =>
     return JSON.parse(response.text);
   } catch (error) {
     console.error("AI Enrichment failed:", error);
-    throw error;
+    return mockFeaturePRD;
   }
 };
 
 export const simulateRevenueImpact = async (features: Feature[], strategy: 'growth' | 'efficiency'): Promise<{ featureId: string, impact: PredictedImpact }[]> => {
+  const ai = getAIClient();
+  
+  if (!ai) {
+    console.warn("AI disabled: returning empty revenue impact. Add VITE_GEMINI_API_KEY to enable.");
+    return features.map(f => ({
+      featureId: f.id,
+      impact: {
+        arrDelta: 0,
+        retentionLift: 0,
+        expansionProb: 0,
+        confidence: 0
+      }
+    }));
+  }
+
   const prompt = `Act as a SaaS Revenue Strategist. Predict the ARR Delta (USD), Retention Lift (%), and Expansion Probability (%) for each of the following features based on a "${strategy}" strategic focus.
   
   Features:
@@ -143,11 +207,26 @@ export const simulateRevenueImpact = async (features: Feature[], strategy: 'grow
     return JSON.parse(response.text);
   } catch (error) {
     console.error("Revenue simulation failed:", error);
-    return [];
+    return features.map(f => ({
+      featureId: f.id,
+      impact: {
+        arrDelta: 0,
+        retentionLift: 0,
+        expansionProb: 0,
+        confidence: 0
+      }
+    }));
   }
 };
 
 export const enrichOrganisationIntelligence = async (org: Partial<Organisation>): Promise<Organisation> => {
+  const ai = getAIClient();
+  
+  if (!ai) {
+    console.warn("AI disabled: returning mock organisation data. Add VITE_GEMINI_API_KEY to enable.");
+    throw new Error("AI features are disabled. Add VITE_GEMINI_API_KEY to enable organisation intelligence enrichment.");
+  }
+
   const prompt = `Act as an Organisation Intelligence Platform. Based on the following organization details, generate a comprehensive structured profile.
   Name: ${org.name}
   Website: ${org.digitalPresence?.website}
@@ -224,6 +303,13 @@ export const enrichOrganisationIntelligence = async (org: Partial<Organisation>)
 };
 
 export const generateVibePrompts = async (features: Feature[], stack: TechStackComponent[]): Promise<VibePromptSet> => {
+  const ai = getAIClient();
+  
+  if (!ai) {
+    console.warn("AI disabled: returning mock vibe prompts. Add VITE_GEMINI_API_KEY to enable.");
+    return mockVibePrompts;
+  }
+
   const prompt = `You are a Vibe Engineering Orchestrator. Generate a comprehensive set of "Build Vibe Prompts" for an AI coding tool (like Cursor or Windsurf) based on the following features and tech stack.
   
   FEATURES TO BUILD:
@@ -261,11 +347,18 @@ export const generateVibePrompts = async (features: Feature[], stack: TechStackC
     return JSON.parse(response.text);
   } catch (error) {
     console.error("Vibe generation failed:", error);
-    throw error;
+    return mockVibePrompts;
   }
 };
 
 export const generateCustomerSegments = async (insights: Insight[], portalIdeas: UserIdea[]): Promise<CustomerSegment[]> => {
+  const ai = getAIClient();
+  
+  if (!ai) {
+    console.warn("AI disabled: returning empty customer segments. Add VITE_GEMINI_API_KEY to enable.");
+    return [];
+  }
+
   const prompt = `Act as a Product Marketing & Strategy AI. Analyze these insights and user ideas to identify 3 distinct "Customer Segments" with deep intelligence profiles.
   
   Insights: ${insights.map(i => i.content).join(' | ')}
@@ -384,6 +477,6 @@ export const generateCustomerSegments = async (insights: Insight[], portalIdeas:
     return JSON.parse(response.text);
   } catch (err) {
     console.error("Customer Segment generation failed:", err);
-    throw err;
+    return [];
   }
 };

@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { TechStackProfile, Feature, VibePromptSet, TechStackComponent } from '../types';
 import { ICONS } from '../constants';
-import { generateVibePrompts } from '../services/geminiService';
+import { generateVibePrompts, AI_ENABLED } from '../services/geminiService';
 
 interface VibeCodeViewProps {
   stack: TechStackProfile;
@@ -131,8 +131,9 @@ const VibeCodeView: React.FC<VibeCodeViewProps> = ({ stack, features }) => {
            <div className="p-8 bg-white border-t border-gray-100">
               <button 
                  onClick={handleOrchestrate}
-                 disabled={isGenerating || selectedFeatureIds.length === 0}
+                 disabled={isGenerating || selectedFeatureIds.length === 0 || !AI_ENABLED}
                  className="w-full py-5 bg-gray-900 text-white rounded-3xl font-black text-sm hover:bg-black transition-all flex items-center justify-center space-x-3 shadow-xl shadow-gray-200 disabled:opacity-50 disabled:shadow-none"
+                 title={!AI_ENABLED ? "AI features disabled - add VITE_GEMINI_API_KEY" : undefined}
               >
                  {isGenerating ? <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" /> : <ICONS.Gemini className="w-5 h-5" />}
                  <span>{isGenerating ? 'Synthesizing Build Vibe...' : 'Orchestrate Build Manifest'}</span>
