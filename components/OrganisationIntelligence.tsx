@@ -167,7 +167,7 @@ const OrganisationIntelligence: React.FC<OrganisationIntelligenceProps> = ({ org
                    <EditField label="Mission" value={organisation.strategy.mission} path="strategy.mission" type="textarea" />
                    <EditField label="Definition of Success" value={organisation.strategy.successDefinition} path="strategy.successDefinition" type="textarea" />
                    <div className="space-y-4">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Key Priorities</summary>
+                      <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Key Priorities</label>
                       <div className="flex flex-wrap gap-2">
                         {organisation.strategy.priorities.map((p, i) => (
                           <div key={i} className="px-4 py-2 bg-gray-50 rounded-xl text-xs font-bold text-gray-700 border border-gray-100">{p}</div>
